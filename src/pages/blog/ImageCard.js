@@ -1,8 +1,10 @@
-const ImageCard = ({ className, attachmentsUrl }) => {
-  const src = './attachments/' + attachmentsUrl.trim();
+const ImageCard = ({ className, attachmentUrl }) => {
+  console.log('attachmentUrl', attachmentUrl.trim());
+
+  const src = './pages/blog/attachments/' + attachmentUrl.trim()
   return (
     <div className="w-full flex justify-center align-center">
-      <img src={src} alt={attachmentsUrl} className="w-54 h-54" />
+      <img src={src} alt={attachmentUrl} className="w-54 h-54" />
     </div>
   )
 }

@@ -5,11 +5,13 @@ import { removePrefix, removePrefixAndSuffix } from '../../utils/stringOperation
 import { extractContent, extractAttachments } from '../../utils/dataTransform';
 import ImageCard from './ImageCard';
 const PostCard = () => {
-  const [posts, setPosts] = useState([])
+  const [posts, setPosts] = useState([]);
+  const [attachments, setAttachments] = useState({})
 
-  const fetchAllMarkdown = () => {
+
+  const fetchAllMarkdown = async () => {
     const tempMarkdownFiles = require.context('./notes/', false, /\.md$/);
-    tempMarkdownFiles.keys().map((docName) =>
+    await tempMarkdownFiles.keys().map((docName) =>
       import(`./notes/${removePrefix(docName)}`)
         .then(res =>
           fetch(res.default)
@@ -19,11 +21,11 @@ const PostCard = () => {
                 "docName": removePrefixAndSuffix(docName),
                 "content": extractContent(response),
                 "attachments": extractAttachments(response)
-
               }
-              console.log(response)
+              const temp = attachments;
+              temp[`${o.docName}`] = o.attachments;
               setPosts(posts => [...posts, o])
-
+              setAttachments(temp)
             })
             .catch(err => console.log(err))
         )
@@ -49,10 +51,13 @@ const PostCard = () => {
             >{post.content}</Markdown>
           </div>
           {
-            post.attachments.map((src) =>
-              <ImageCard key={src} attachmentsUrl={src} />
-            )
+            Array.isArray(attachments[`${post.docName}`]) ?
+              attachments[`${post.docName}`].map((attachment, index) => (
+                <ImageCard key={index} docName={post.docName} attachmentUrl={attachment} />
+              )) :
+              null
           }
+
         </div>
       ))}
     </div>
