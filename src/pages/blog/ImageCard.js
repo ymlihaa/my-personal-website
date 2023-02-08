@@ -1,12 +1,6 @@
-const ImageCard = ({ className, attachmentUrl }) => {
-  console.log('attachmentUrl', attachmentUrl.trim());
-
-  const src = './pages/blog/attachments/' + attachmentUrl.trim()
+const PostImage = ({ className, attachmentUrl }) => {
   return (
-    <div className="w-full flex justify-center align-center">
-      <img src={src} alt={attachmentUrl} className="w-54 h-54" />
-    </div>
-  )
+    <img className=" w-full h-96 md:h-auto object-cover md:w-48 rounded-t-lg md:rounded-none md:rounded-l-lg" src={require(`./attachments/${attachmentUrl.trim()}`)} alt="" />)
 }
 
-export default ImageCard;
+export default PostImage;
